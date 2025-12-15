@@ -19,7 +19,7 @@ Tugas Kandidat :
 Jawaban : <br>
 Sebelum menjawab pertanyaan saya rasa ketika dijalankan function tersebut akan error karena didalam function tersebut menerapkan asynchronous yang ditandai dengan `await` tetapi pada function tidak mendeclare bahwa function tersebut merupakan function asynchronous, contohnya seperti `async funticon getUserData(id)`
 
-1.Untuk meanagani error pada function getUserData bisa melakukan dengan berbagai cara\*\*:
+1.Untuk meanagani error pada function getUserData bisa melakukan dengan berbagai cara:
 
 - Tambahkan validasi pada id dimana apabila id null atau kosong maka prosess pengambilan data user dan posts tidak dilakukan dan akan memberikan return error dengan message bahwa id required
 - Menggunakan try catch agar ketika terjadi error kita dapat mengontrol error tersebut seperti contohnya mengambalikan atau mereturn error message ke frontend dan sebagainya
