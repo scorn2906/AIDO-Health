@@ -8,8 +8,4 @@ app.use(express.json());
 app.use(publicRouter);
 app.use(errorMiddleware);
 
-// app.get("/", (req, res) => {
-//   res.send("Hello, World!");
-// });
-
 export default app;

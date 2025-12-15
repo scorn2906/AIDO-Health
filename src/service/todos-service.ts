@@ -4,7 +4,7 @@ import {
   Todos,
   UpdateTodosRequest,
 } from "../model/todos-model";
-import { v4 as uuidv4 } from "uuid";
+import { v4 } from "uuid";
 import { ResponseError } from "../error/response-error";
 import { logger } from "../applications/logging";
 
@@ -19,7 +19,7 @@ export class TodosService {
     const todosDb = await read<Todos>();
     const payload: Todos = {
       ...request,
-      id: uuidv4(),
+      id: v4(),
       status: request.status ?? "pending",
     };
     todosDb.push(payload);
