@@ -1,18 +1,53 @@
-import { CreateTodosRequest, STATUS_TODOS } from "../model/todos-model";
-import { TodosValidation } from "../validation/todos-validation";
-import { Validation } from "../validation/validation";
+import { read, write } from "../libs/db-json";
+import {
+  CreateTodosRequest,
+  Todos,
+  UpdateTodosRequest,
+} from "../model/todos-model";
+import { v4 as uuidv4 } from "uuid";
+import { ResponseError } from "../error/response-error";
 
 export class TodosService {
-  static async createTodos(request: CreateTodosRequest) {
-    const payload = { ...request };
-    if (!payload.status) {
-      payload.status = STATUS_TODOS.PENDING;
-    }
-    const todosRequest = Validation.validate(
-      TodosValidation.CREATE_TODOS,
-      payload
-    );
+  static async getTodos(status?: string) {
+    const todosDb = await read<Todos>();
+    if (status) return todosDb.filter((item) => item.status === status);
+    return todosDb;
+  }
 
-    return todosRequest;
+  static async createTodos(request: CreateTodosRequest) {
+    const todosDb = await read<Todos>();
+    const payload: Todos = {
+      ...request,
+      id: uuidv4(),
+      status: request.status ?? "pending",
+    };
+    todosDb.push(payload);
+    await write(todosDb);
+    return payload;
+  }
+
+  static async checkTodosExists(id: string) {
+    const todosDb = await read<Todos>();
+
+    const index = todosDb.findIndex((item) => item.id === id);
+    if (index === -1) throw new ResponseError(404, "Data not found");
+    return index;
+  }
+
+  static async updateTodos(request: UpdateTodosRequest) {
+    const todosDb = await read<Todos>();
+    const index = await this.checkTodosExists(request.id);
+    todosDb[index].status = request.status;
+    await write(todosDb);
+
+    return todosDb[index];
+  }
+
+  static async deleteTodos(id: string) {
+    const todosDb = await read<Todos>();
+    const index = await this.checkTodosExists(id);
+    todosDb.splice(index, 1);
+    await write(todosDb);
+    return null;
   }
 }

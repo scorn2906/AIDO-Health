@@ -1,15 +1,17 @@
-export type TodosResponse = {
+export type Todos = {
   id: string;
   title: string;
-  status: STATUS_TODOS;
+  status: "pending" | "done";
 };
 
 export type CreateTodosRequest = {
   title: string;
-  status: STATUS_TODOS;
+  status: "pending" | "done";
+  // status: STATUS_TODOS;
 };
 
-export enum STATUS_TODOS {
-  PENDING = "pending",
-  DONE = "done",
-}
+export type UpdateTodosRequest = {
+  // status: STATUS_TODOS;
+  id: string;
+  status: "pending" | "done";
+};

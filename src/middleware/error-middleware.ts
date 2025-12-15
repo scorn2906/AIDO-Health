@@ -16,12 +16,14 @@ export const errorMiddleware = async (
       message: error.issues[0].message,
     });
   } else if (error instanceof ResponseError) {
+    console.log("masuk sini");
     res.status(error.status).json({
       success: false,
       data: null,
       message: error.message,
     });
   } else {
+    console.log("masuk sono");
     res.status(500).json({
       success: false,
       data: null,
