@@ -3,6 +3,7 @@ import { TodosService } from "../service/todos-service";
 import { Validation } from "../validation/validation";
 import { TodosValidation } from "../validation/todos-validation";
 import { ResponseError } from "../error/response-error";
+import { logger } from "../applications/logging";
 
 export class TodosController {
   static async get(req: Request, res: Response, next: NextFunction) {
@@ -14,7 +15,9 @@ export class TodosController {
         message: "Todos list",
         data: response,
       });
+      logger.info(`GET /todos returned ${response.length} todos`);
     } catch (error) {
+      logger.error(`GET /todos failed ${error}`);
       next(error);
     }
   }
@@ -32,6 +35,7 @@ export class TodosController {
         data: response,
       });
     } catch (error) {
+      logger.error(`POST /todos Failed to create todo: ${Error}`);
       next(error);
     }
   }
@@ -55,6 +59,7 @@ export class TodosController {
         data: response,
       });
     } catch (error) {
+      logger.error(`PATCH /todos Failed to update todo: ${Error}`);
       next(error);
     }
   }
@@ -70,6 +75,7 @@ export class TodosController {
         data: null,
       });
     } catch (error) {
+      logger.error(`PATCH /todos Failed to delete todo: ${Error}`);
       next(error);
     }
   }

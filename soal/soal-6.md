@@ -13,6 +13,8 @@ Pertanyaan : Apa yang salah? Berikan contoh input yang gagal.
 
 Jawaban:
 
+Yang salah dari codingan in yaitu pada perkondisian if(!a || !b) return 0 dimana validasi seperti ini tidak cukup kuat untuk menjaga function tersebut berjalan dengan baik, karena pada javascript tidak dijelaskan apakah type variable a dan b itu harus integer atau bukan sehingga apabila params yang dikirim berupa string maka function tersebut akan mereturn string tersebut dengan cara menambahkannya seperti a=2 b=”f” maka return yang dihasilkan yaitu 2f yang mana itu berarti salah, seharusnya return yang benar adalah 0 karena f bukanlah number atau integer.
+
 ```js
 function sum(a, b) {
   if (!a || !b) return 0;

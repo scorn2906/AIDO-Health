@@ -27,9 +27,9 @@ Sebelum menjawab pertanyaan saya rasa ketika dijalankan function tersebut akan e
 
 2. function tersebut bisa dibuat paralel dengan menggunakan promise all pada javascript dengan begitu kedua perintah get user dan get post dapat dilakukan secara bersamaan
 
-3. Karena function getUserData ini tanpa menggunakan validasi, handle error maka ketika `axios.get` gagal maka beberapa case error akan terjadi, seperti:
+3. Karena function getUserData ini tanpa menggunakan validasi, dan handle error maka ketika `axios.get` gagal maka beberapa case error akan terjadi, seperti:
 
-- secara user experiencce akan berantakan karena atau buruk karena secara UX user tidak tau apa yang sebenarnya terjadi karena tidak ada balikan atau response yang jelas kepada sisi frontend
+- secara user experiencce akan berantakan atau buruk karena secara UX user tidak tau apa yang sebenarnya terjadi karena tidak ada balikan atau response yang jelas kepada sisi frontend
 - aplikasi pada backend akan crash karena handle rejection yang tidak ditangani dengan baik
 - value `user.data` dan `posts.data` tentunya akan kosong
 - Akan membuat kesulitan bagi developer untuk melakukan debugging kedepannya apabila terjadi error atau gagal karena tidak adanya logger ataupun error handling pada function geUserData

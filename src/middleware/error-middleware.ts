@@ -1,6 +1,7 @@
 import { NextFunction, Response, Request } from "express";
 import { ZodError } from "zod";
 import { ResponseError } from "../error/response-error";
+import { logger } from "../applications/logging";
 
 export const errorMiddleware = async (
   error: Error,
@@ -8,22 +9,21 @@ export const errorMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
+  logger.error(`${req.method} ${req.url} - ${error.message}`);
   if (error instanceof ZodError) {
     res.status(400).json({
       success: false,
-      //   errors: `Validation Error : ${JSON.stringify(error)}`,
       data: null,
+      //   errors: `Validation Error : ${JSON.stringify(error)}`,
       message: error.issues[0].message,
     });
   } else if (error instanceof ResponseError) {
-    console.log("masuk sini");
     res.status(error.status).json({
       success: false,
       data: null,
       message: error.message,
     });
   } else {
-    console.log("masuk sono");
     res.status(500).json({
       success: false,
       data: null,

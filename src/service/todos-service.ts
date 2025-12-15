@@ -6,6 +6,7 @@ import {
 } from "../model/todos-model";
 import { v4 as uuidv4 } from "uuid";
 import { ResponseError } from "../error/response-error";
+import { logger } from "../applications/logging";
 
 export class TodosService {
   static async getTodos(status?: string) {
@@ -23,6 +24,7 @@ export class TodosService {
     };
     todosDb.push(payload);
     await write(todosDb);
+    logger.info(`Todo created: ${payload.id} - ${payload.title}`);
     return payload;
   }
 
@@ -30,7 +32,11 @@ export class TodosService {
     const todosDb = await read<Todos>();
 
     const index = todosDb.findIndex((item) => item.id === id);
-    if (index === -1) throw new ResponseError(404, "Data not found");
+
+    if (index === -1) {
+      logger.warn(`Todo not found: ${id}`);
+      throw new ResponseError(404, "Data not found");
+    }
     return index;
   }
 
@@ -39,15 +45,17 @@ export class TodosService {
     const index = await this.checkTodosExists(request.id);
     todosDb[index].status = request.status;
     await write(todosDb);
-
+    logger.info(`Todo updated: ${request.id} with payload ${todosDb[index]}`);
     return todosDb[index];
   }
 
   static async deleteTodos(id: string) {
     const todosDb = await read<Todos>();
     const index = await this.checkTodosExists(id);
+    logger.info(`Todo deleted: ${todosDb[index]}`);
     todosDb.splice(index, 1);
     await write(todosDb);
+
     return null;
   }
 }
