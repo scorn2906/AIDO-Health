@@ -14,6 +14,13 @@ describe("Test Todos API", () => {
     todoId = res.body.data.id;
   });
 
+  it("should failed create todo", async () => {
+    const res = await request(app).post("/api/todos").send({ title: "" });
+    expect(res.statusCode).toBe(400);
+    expect(res.body.success).toBe(false);
+    expect(res.body.data).toEqual(null);
+  });
+
   it("should get a list of todo", async () => {
     const res = await request(app).get("/api/todos");
     expect(res.statusCode).toBe(200);
